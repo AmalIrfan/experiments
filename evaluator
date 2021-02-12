@@ -1,0 +1,125 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+# pylint: disable = eval-used, R1723, W0703, C0103, W0611
+
+'''
+evaluates the input and prints out the result, can be used as a calculator
+
+I basically calls `eval` function on your input, and also provides you with a
+beautiful prompt (in my opinion), which you can customize by editing the
+source. That's all.
+'''
+
+# coloured prompt using ansi
+PROMPT = ('\033[2;32m'
+          'eval '
+          '\033[22;34m'
+          '→  '
+          '\033[0m')
+'''
+ansi format:
+    escape `\033[`
+    code seperated by `;`
+    endswith `m`
+eg:
+    `\033[0m` (resets everything)
+some of the colours
+fg:		name:		bg:
+    30		black		40
+    31		red			41
+    32		green		42
+    33		yellow		43
+    34		blue		44
+    35		magenta		45
+    36		cyan		46
+    37		white		47
+    39		default 	49
+
+some of the styles
+    1	bright
+    2	dim
+    3	italic
+    4	underlined
+    5	blinking
+    6	blinking
+    7	inverted
+    8	invisible
+    9	strikethrough
+    22	default
+
+reset every thing using 0
+'''
+
+HELP = f'''\
+I calls eval funcion on your input and prints out the result, so only the
+python3 accepted syntax for evaluation will work.
+
+example for calculations
+    {PROMPT}1+1
+    2
+    {PROMPT}(1+1)*10.**100
+    2e+100\
+
+and also:
+    q* | ^D | ^C	enter anything starting with q, Ctrl-D or Ctrl-C to quit
+    h*				enter anything starting with h to get help
+'''
+
+def main():
+    '''entry point'''
+
+    # lets loop infinitley
+    while 1:
+
+        # run it in a try except so that all error dont crash me
+        try:
+
+            # prompt user and get input
+            i = input(PROMPT)
+
+            # quit if anything starting with q entered
+            if i.lower().startswith('q'):
+                break
+
+            # get help if anything starting with h entered
+            elif i.lower().startswith('h'):
+                print(HELP)
+
+            # warn user if `main` entered, for fun (it can be helpful)
+            elif 'main' in i:
+                print('Are you trying to cheat, your input smells fishy')
+
+            # otherwise print the evaluation
+            else:
+                print(eval(i))
+
+        # quit if ^C (Ctrl-C) which raises KeyboardInterrupt or
+        # ^D (Ctrl-D a.k.a EOF) which raises EOFError is pressed
+        except (KeyboardInterrupt, EOFError):
+            print()
+            break
+
+        # if any other exception occur print it out
+        except BaseException as e:
+            print(e.__class__.__name__,e,sep=': ')
+
+
+if __name__ == '__main__':
+    import sys
+
+    # if command line arguments are present evalute them
+    if len(sys.argv) > 1:
+        print(eval(''.join(sys.argv[1:])))
+
+    # otherwise start the application
+    else:
+
+        # try importing readline (it lets the user edit their input more
+        # easily)
+        try:
+            import readline
+        except ImportError:
+            pass
+
+        # call main
+        main()
