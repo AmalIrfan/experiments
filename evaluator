@@ -76,8 +76,8 @@ example for calculations
     2e+100\
 
 and also:
-    q* | ^D | ^C	enter anything starting with q, Ctrl-D or Ctrl-C to quit
-    h*				enter anything starting with h to get help
+    ^q | <C-D> | <C-C>        enter anything starting with q, Ctrl-D or Ctrl-C to quit
+    ^h                        enter anything starting with h to get help
 '''
 
 def main():
